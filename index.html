@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parabéns, Mulan!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #ffdde6, #ee9ca7);
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 20px;
+        }
+        .birthday-container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        h1 {
+            color: #ff6b9e;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .cake {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #ff6b9e;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .button:hover {
+            transform: scale(1.1);
+        }
+        #surpriseModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+        #surpriseImage {
+            max-width: 90%;
+            max-height: 90%;
+            display: block;
+            margin: auto;
+            margin-top: 5%;
+            object-fit: contain;
+        }
+        .close-btn {
+            color: #fff;
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: transparent;
+            top: -10px;
+            animation: fall linear infinite;
+            z-index: 5;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        .balloon {
+            position: fixed;
+            width: 30px;
+            height: 50px;
+            background-color: transparent;
+            border-radius: 50% 50% 0 0;
+            top: -60px;
+            animation: float linear infinite;
+            z-index: 5;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .birthday-container {
+                padding: 20px 15px;
+                margin: 0 auto;
+                width: calc(100% - 40px);
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .message {
+                font-size: 1rem;
+            }
+            .close-btn {
+                top: 10px;
+                right: 20px;
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="birthday-container">
+        <div class="cake">🎂</div>
+        <img src="https://i.postimg.cc/TwKfgS2J/essa.jpg" alt="gru" />
+        <h1>Parabéns, coisinha chata!</h1>
+        <p class="message">Tudo de bom para tu! Felicidades! Continue aproveitando sua viagem, que virou moradia, que virou sua vida.
+            Não é sempre que vai estar saltitante e alegre como conheço mas hoje é dia de comemorar. Continue sendo essa pessoa apaixonada
+            pela vida, ambiciosa e firme. É por isso que os outros acabam se apaixonando por você também, entendo um pouco disso. Jamais
+            vai ser um dia comum para mim (infelizmente) lembrarei eternamente desse ser. Mentira, lembro sempre com muito carinho.
+            Espero que esteja bem e feliz! Como sempre... qualquer coisa estou aqui, seja pra desabafar, reclamar, chorar ou querer
+            matar alguém... eu ajudo. kkkk Beijo na bunda, bem na marquinha. Perdi a linha mais uma vez, parei. Prometo. Mentira! Tchau! </p>
+        <a href="#" class="button" onclick="showSurprise()">NÃO CLIQUE!</a>
+    </div>
+
+    <div id="surpriseModal">
+        <span class="close-btn" onclick="closeSurprise()">&times;</span>
+        <img id="surpriseImage" src="https://fashionjournal.com.au/wp-content/uploads/2020/06/fashion-journal-normal-people-mob.png" alt="Special Surprise">
+    </div>
+
+    <script>
+        // Confetti and Balloon Generation
+        function createConfetti() {
+            const colors = ['#ff6b9e', '#ffdde6', '#ff9a9e', '#ffffff'];
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }
+
+        function createBalloon() {
+            const colors = ['#ff6b9e', '#ffdde6', '#ff9a9e'];
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            balloon.style.animationDuration = (Math.random() * 5 + 3) + 's';
+            
+            document.body.appendChild(balloon);
+            
+            setTimeout(() => {
+                balloon.remove();
+            }, 6000);
+        }
+
+        // Continuous background animation
+        function startBackgroundAnimation() {
+            setInterval(createConfetti, 300);
+            setInterval(createBalloon, 500);
+        }
+
+        // Surprise Image Functionality
+        function showSurprise() {
+            const modal = document.getElementById('surpriseModal');
+            modal.style.display = 'block';
+        }
+
+        function closeSurprise() {
+            const modal = document.getElementById('surpriseModal');
+            modal.style.display = 'none';
+        }
+
+        // Start animations when page loads
+        window.onload = startBackgroundAnimation;
+    </script>
+</body>
+</html>
